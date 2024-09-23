@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Quiz</title>
+</head>
+<body>
+    <h1>Quiz Sobre Desarrollo Web</h1>
+
+    <div id="start-screen">
+        <h2>Escribe tu nombre</h2>
+        <form id="start-form">
+            <input type="text" id="name" placeholder="Nombre" required>
+            <button type="submit" id="start-button">Comenzar Quiz</button>
+        </form>
+
+        <div class="mejores">
+            <h2>Mejores Puntuaciones</h2>
+            <ol id="high-scores-list"></ol>
+        </div>
+    </div>
+
+    <div id="quiz-container" style="display: none;">
+        <h2 id="question-text"></h2>
+        <div id="options-container"></div>
+        <button id="next-button" style="display: none;">Siguiente</button>
+    </div>
+
+    <div id="score-screen" style="display: none;">
+        <h2 id="score"></h2>
+        <a href="index.html">Aceptar</a>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
