@@ -9,29 +9,33 @@
     <title>Quiz</title>
 </head>
 <body>
-    <h1>Quiz Sobre Desarrollo Web</h1>
+    <section class="container">
+        <h1 class="container_escribiendo">
+          Quiz Desarrollo Web
+        </h1>
+      </section>
 
-    <div id="start-screen">
+    <div id="pantallaInicio">
         <h2>Escribe tu nombre</h2>
-        <form id="start-form">
-            <input type="text" id="name" placeholder="Nombre" required>
-            <button type="submit" id="start-button">Comenzar Quiz</button>
+        <form id="iniciar">
+            <input type="text" id="nombre" placeholder="Nombre" maxlength="20" required>
+            <button type="submit" id="btnInicio">Comenzar Quiz</button>
         </form>
 
         <div class="mejores">
             <h2>Mejores Puntuaciones</h2>
-            <ol id="high-scores-list"></ol>
+            <ol id="listaPuntajes"></ol>
         </div>
     </div>
 
-    <div id="quiz-container" style="display: none;">
-        <h2 id="question-text"></h2>
-        <div id="options-container"></div>
-        <button id="next-button" style="display: none;">Siguiente</button>
+    <div id="quiz" style="display: none;">
+        <h2 id="textoPregunta"></h2>
+        <div id="contenedorOpciones"></div>
+        <button id="siguiente" style="display: none;">Siguiente</button>
     </div>
 
-    <div id="score-screen" style="display: none;">
-        <h2 id="score"></h2>
+    <div id="pantallaPuntaje" style="display: none;">
+        <h2 id="puntaje"></h2>
         <a href="index.html">Aceptar</a>
     </div>
 

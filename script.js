@@ -1,4 +1,4 @@
-const questions = [
+const preguntas = [
     {
         pregunta: "¿Qué significa HTML?",
         opciones: ["HyperText Markup Language", "HyperText Machine Language", "Hyper Tool Multi Language"],
@@ -94,71 +94,75 @@ const questions = [
 
 let preguntaActual = 0;
 let puntaje = 0;
-let puntajes = JSON.parse(localStorage.getItem('highScores')) || [];
+let puntajes = JSON.parse(localStorage.getItem('puntajesAltos')) || [];
 
-function displayHighScores() {
-    const highScoresList = document.getElementById('high-scores-list');
-    highScoresList.innerHTML = puntajes
-        .map(puntaje => `<li>${puntaje.name}: ${puntaje.puntaje}</li>`)
+function mostrarPuntajesAltos() {
+    const listaPuntajes = document.getElementById('listaPuntajes');
+    listaPuntajes.innerHTML = puntajes
+        .filter(p => p.nombre && p.puntaje !== undefined)
+        .map(p => `<li>${p.nombre}: ${p.puntaje}</li>`)
         .join('');
 }
 
-document.getElementById('start-form').addEventListener('submit', function(event) {
+document.getElementById('iniciar').addEventListener('submit', function(event) {
     event.preventDefault();
-    const name = document.getElementById('name').value;
-    if (name) {
-        document.getElementById('start-screen').style.display = 'none';
-        document.getElementById('quiz-container').style.display = 'block';
-        loadQuestion();
+    const nombre = document.getElementById('nombre').value;
+    if (nombre) {
+        document.getElementById('pantallaInicio').style.display = 'none';
+        document.getElementById('quiz').style.display = 'block';
+        cargarPregunta();
     }
 });
 
-function loadQuestion() {
-    const questionData = preguntas[preguntaActual];
-    document.getElementById('question-text').textContent = questionData.pregunta;
-    const optionsContainer = document.getElementById('options-container');
-    optionsContainer.innerHTML = '';
+function cargarPregunta() {
+    const datosPregunta = preguntas[preguntaActual];
+    document.getElementById('textoPregunta').textContent = datosPregunta.pregunta;
+    const contenedorOpciones = document.getElementById('contenedorOpciones');
+    contenedorOpciones.innerHTML = '';
 
-    questionData.opciones.forEach((opcion, index) => {
+    datosPregunta.opciones.forEach((opcion, index) => {
         const button = document.createElement('button');
         button.textContent = opcion;
-        button.classList.add('option-button');
+        button.classList.add('btnOpcion');
         button.addEventListener('click', function() {
-            checkAnswer(index);
+            checkRespuesta(index);
         });
-        optionsContainer.appendChild(button);
+        contenedorOpciones.appendChild(button);
     });
 }
 
-function checkAnswer(selectedIndex) {
-    const questionData = preguntas[preguntaActual];
-    if (selectedIndex === questionData.answer) {
+function checkRespuesta(selectedIndex) {
+    const preguntaDatos = preguntas[preguntaActual];
+    if (selectedIndex === preguntaDatos.respuesta) {
         puntaje++;
     }
     preguntaActual++;
     if (preguntaActual < preguntas.length) {
-        loadQuestion();
+        cargarPregunta();
     } else {
-        endQuiz();
+        terminarQuiz();
     }
 }
 
-function endQuiz() {
-    document.getElementById('quiz-container').style.display = 'none';
-    document.getElementById('score-screen').style.display = 'block';
+function terminarQuiz() {
+    document.getElementById('quiz').style.display = 'none';
+    document.getElementById('pantallaPuntaje').style.display = 'block';
     document.getElementById('puntaje').textContent = `Puntuación: ${puntaje}/${preguntas.length}`;
 
-    const name = document.getElementById('name').value;
-    saveScore(name, puntaje);
-    displayHighScores();
+    const nombre = document.getElementById('nombre').value;
+    guardarPuntaje(nombre, puntaje);
+    mostrarPuntajesAltos();
 }
 
-function saveScore(name, puntaje) {
-    const newScore = { name: name, puntaje: puntaje };
-    puntajes.push(newScore);
-    puntajes.sort((a, b) => b.puntaje - a.puntaje);
-    puntajes = puntajes.slice(0, 5); 
-    localStorage.setItem('highScores', JSON.stringify(scores));
+function guardarPuntaje(nombre, puntaje) {
+    const nuevoPuntaje = { nombre, puntaje };
+
+    if (nombre && puntaje !== undefined) {
+        puntajes.push(nuevoPuntaje);
+        puntajes.sort((a, b) => b.puntaje - a.puntaje);
+        puntajes = puntajes.slice(0, 5);  
+        localStorage.setItem('puntajesAltos', JSON.stringify(puntajes));
+    }
 }
 
-displayHighScores();
+mostrarPuntajesAltos();

@@ -7,6 +7,8 @@ body {
  
  h1 {
      color: #CFF250;
+     text-shadow: 0 0 5px #CFF250;
+     font-size: 1.5rem;
  }
  
  input {
@@ -19,10 +21,14 @@ body {
  }
  
  input:focus {
-     box-shadow: 0 0 5px #CFF250;
+     box-shadow: 0 0 10px #CFF250;
+     outline: none;
      transition: 0.5s;
  }
- 
+ input:hover {
+    box-shadow: 0 0 10px #CFF250;
+    transition: 0.5s;
+ }
  button {
      background-color: transparent;
      color: #CFF250;
@@ -35,6 +41,7 @@ body {
  button:hover {
      background-color: #CFF250;
      color: #1b1b1b;
+     box-shadow: 0 0 10px #CFF250;
      transition: 0.5s;
  }
  
@@ -61,6 +68,39 @@ body {
      margin-top: 50px;
  }
  
- .option-button {
+ .btnOpcion {
      margin: 15px;
  }
+
+ a:hover {
+    text-shadow: 0 0 10px #CFF250;
+    transition: 0.5s;
+ }
+
+ .container{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  } 
+
+  .container_escribiendo{
+    width:  260px;   
+    animation: animacion 1.5s steps(20), transparent .5s step-end infinite alternate;
+    white-space: nowrap;
+    overflow: hidden;
+    color: #CFF250;
+    border-right: 3px solid;
+  }
+  
+  @keyframes animacion {
+    from {
+      width: 0px
+    }
+  }
+      
+  @keyframes transparent {
+    50% {
+      border-color: transparent
+    }
+  }
