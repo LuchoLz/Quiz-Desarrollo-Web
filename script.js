@@ -92,77 +92,88 @@ const preguntas = [
     
 ];
 
-let preguntaActual = 0;
-let puntaje = 0;
+// Se inicializan las variables para el seguimiento de la pregunta actual y el puntaje del usuario.
+let preguntaActual = 0; // Indica cuál es la pregunta actual en el quiz.
+let puntaje = 0; // Almacena el puntaje del usuario.
+
+// Intenta obtener los puntajes altos del localStorage, o inicializa como un array vacío si no hay datos.
 let puntajes = JSON.parse(localStorage.getItem('puntajesAltos')) || [];
 
+// Función para mostrar los puntajes altos en la interfaz.
 function mostrarPuntajesAltos() {
-    const listaPuntajes = document.getElementById('listaPuntajes');
-    listaPuntajes.innerHTML = puntajes
-        .filter(p => p.nombre && p.puntaje !== undefined)
-        .map(p => `<li>${p.nombre}: ${p.puntaje}</li>`)
-        .join('');
+    const listaPuntajes = document.getElementById('listaPuntajes'); // Elemento HTML donde se mostrarán los puntajes.
+    listaPuntajes.innerHTML = puntajes // Se genera el contenido HTML para la lista de puntajes.
+        .filter(p => p.nombre && p.puntaje !== undefined) // Filtra solo los puntajes válidos.
+        .map(p => `<li>${p.nombre}: ${p.puntaje}</li>`) // Crea un elemento de lista para cada puntaje.
+        .join(''); // Une todos los elementos en una sola cadena.
 }
 
+// Se agrega un evento al formulario para iniciar el quiz.
 document.getElementById('iniciar').addEventListener('submit', function(event) {
-    event.preventDefault();
-    const nombre = document.getElementById('nombre').value;
-    if (nombre) {
-        document.getElementById('pantallaInicio').style.display = 'none';
-        document.getElementById('quiz').style.display = 'block';
-        cargarPregunta();
+    event.preventDefault(); // Previene el comportamiento por defecto del formulario (recarga).
+    const nombre = document.getElementById('nombre').value; // Obtiene el nombre ingresado por el usuario.
+    if (nombre) { // Verifica que se haya ingresado un nombre.
+        document.getElementById('pantallaInicio').style.display = 'none'; // Oculta la pantalla de inicio.
+        document.getElementById('quiz').style.display = 'block'; // Muestra la sección del quiz.
+        cargarPregunta(); // Llama a la función para cargar la primera pregunta.
     }
 });
 
+// Función para cargar la pregunta actual en la interfaz.
 function cargarPregunta() {
-    const datosPregunta = preguntas[preguntaActual];
-    document.getElementById('textoPregunta').textContent = datosPregunta.pregunta;
-    const contenedorOpciones = document.getElementById('contenedorOpciones');
-    contenedorOpciones.innerHTML = '';
+    const datosPregunta = preguntas[preguntaActual]; // Obtiene los datos de la pregunta actual.
+    document.getElementById('textoPregunta').textContent = datosPregunta.pregunta; // Muestra la pregunta en el HTML.
+    const contenedorOpciones = document.getElementById('contenedorOpciones'); // Contenedor para las opciones de respuesta.
+    contenedorOpciones.innerHTML = ''; // Limpia opciones anteriores.
 
+    // Se itera sobre las opciones de respuesta para crear botones.
     datosPregunta.opciones.forEach((opcion, index) => {
-        const button = document.createElement('button');
-        button.textContent = opcion;
-        button.classList.add('btnOpcion');
-        button.addEventListener('click', function() {
-            checkRespuesta(index);
+        const button = document.createElement('button'); // Crea un nuevo botón.
+        button.textContent = opcion; // Establece el texto del botón.
+        button.classList.add('btnOpcion'); // Agrega una clase para estilos.
+        button.addEventListener('click', function() { // Agrega un evento click al botón.
+            checkRespuesta(index); // Llama a la función para verificar la respuesta.
         });
-        contenedorOpciones.appendChild(button);
+        contenedorOpciones.appendChild(button); // Agrega el botón al contenedor de opciones.
     });
 }
 
+// Función que verifica si la respuesta seleccionada es correcta.
 function checkRespuesta(selectedIndex) {
-    const preguntaDatos = preguntas[preguntaActual];
-    if (selectedIndex === preguntaDatos.respuesta) {
-        puntaje++;
+    const preguntaDatos = preguntas[preguntaActual]; // Obtiene los datos de la pregunta actual.
+    if (selectedIndex === preguntaDatos.respuesta) { // Compara el índice seleccionado con la respuesta correcta.
+        puntaje++; // Incrementa el puntaje si la respuesta es correcta.
     }
-    preguntaActual++;
-    if (preguntaActual < preguntas.length) {
-        cargarPregunta();
+    preguntaActual++; // Avanza a la siguiente pregunta.
+    if (preguntaActual < preguntas.length) { // Verifica si hay más preguntas.
+        cargarPregunta(); // Carga la siguiente pregunta.
     } else {
-        terminarQuiz();
+        terminarQuiz(); // Si no hay más preguntas, termina el quiz.
     }
 }
 
+// Función para manejar el final del quiz.
 function terminarQuiz() {
-    document.getElementById('quiz').style.display = 'none';
-    document.getElementById('pantallaPuntaje').style.display = 'block';
-    document.getElementById('puntaje').textContent = `Puntuación: ${puntaje}/${preguntas.length}`;
+    document.getElementById('quiz').style.display = 'none'; // Oculta la sección del quiz.
+    document.getElementById('pantallaPuntaje').style.display = 'block'; // Muestra la pantalla de puntaje.
+    document.getElementById('puntaje').textContent = `Puntuación: ${puntaje}/${preguntas.length}`; // Muestra el puntaje final.
 
-    const nombre = document.getElementById('nombre').value;
-    guardarPuntaje(nombre, puntaje);
-    mostrarPuntajesAltos();
+    const nombre = document.getElementById('nombre').value; // Obtiene el nombre ingresado.
+    guardarPuntaje(nombre, puntaje); // Guarda el puntaje del usuario.
+    mostrarPuntajesAltos(); // Muestra los puntajes altos actualizados.
 }
 
+// Función para guardar el puntaje en localStorage.
 function guardarPuntaje(nombre, puntaje) {
-    const nuevoPuntaje = { nombre, puntaje };
+    const nuevoPuntaje = { nombre, puntaje }; // Crea un objeto con el nombre y puntaje.
 
-    if (nombre && puntaje !== undefined) {
-        puntajes.push(nuevoPuntaje);
-        puntajes.sort((a, b) => b.puntaje - a.puntaje);
-        puntajes = puntajes.slice(0, 5);  
-        localStorage.setItem('puntajesAltos', JSON.stringify(puntajes));
+    if (nombre && puntaje !== undefined) { // Verifica que el nombre y puntaje sean válidos.
+        puntajes.push(nuevoPuntaje); // Agrega el nuevo puntaje al array de puntajes.
+        puntajes.sort((a, b) => b.puntaje - a.puntaje); // Ordena los puntajes de mayor a menor.
+        puntajes = puntajes.slice(0, 5);  // Limita el array a los 5 mejores puntajes.
+        localStorage.setItem('puntajesAltos', JSON.stringify(puntajes)); // Guarda el array en localStorage.
     }
 }
 
+// Llama a la función para mostrar los puntajes altos al cargar la página.
 mostrarPuntajesAltos();
