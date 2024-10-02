@@ -92,17 +92,17 @@ const preguntas = [
     
 ];
 
-// Se inicializan las variables para el seguimiento de la pregunta actual y el puntaje del usuario.
+// variables para el seguimiento de la pregunta actual y el puntaje del usuario.
 let preguntaActual = 0; // Indica cuál es la pregunta actual en el quiz.
-let puntaje = 0; // Almacena el puntaje del usuario.
+let puntaje = 0; // Guarda el puntaje del usuario.
 
-// Intenta obtener los puntajes altos del localStorage, o inicializa como un array vacío si no hay datos.
+// Obtiene los puntajes altos del localStorage, o inicializa como un array vacío si no hay datos.
 let puntajes = JSON.parse(localStorage.getItem('puntajesAltos')) || [];
 
 // Función para mostrar los puntajes altos en la interfaz.
 function mostrarPuntajesAltos() {
-    const listaPuntajes = document.getElementById('listaPuntajes'); // Elemento HTML donde se mostrarán los puntajes.
-    listaPuntajes.innerHTML = puntajes // Se genera el contenido HTML para la lista de puntajes.
+    const listaPuntajes = document.getElementById('listaPuntajes'); 
+    listaPuntajes.innerHTML = puntajes
         .filter(p => p.nombre && p.puntaje !== undefined) // Filtra solo los puntajes válidos.
         .map(p => `<li>${p.nombre}: ${p.puntaje}</li>`) // Crea un elemento de lista para cada puntaje.
         .join(''); // Une todos los elementos en una sola cadena.
@@ -110,7 +110,7 @@ function mostrarPuntajesAltos() {
 
 // Se agrega un evento al formulario para iniciar el quiz.
 document.getElementById('iniciar').addEventListener('submit', function(event) {
-    event.preventDefault(); // Previene el comportamiento por defecto del formulario (recarga).
+    event.preventDefault(); // Evita que se recargue la página
     const nombre = document.getElementById('nombre').value; // Obtiene el nombre ingresado por el usuario.
     if (nombre) { // Verifica que se haya ingresado un nombre.
         document.getElementById('pantallaInicio').style.display = 'none'; // Oculta la pantalla de inicio.
